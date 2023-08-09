@@ -38,7 +38,7 @@ RUN make -j$(nproc) install
 
 FROM debian:bookworm-slim
 
-VOLUME ["/tmp"]
+VOLUME ["/rec"]
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["rtpengine"]
 
