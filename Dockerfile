@@ -69,8 +69,16 @@ RUN --mount=type=cache,target=/var/cache/apt \
   libspandsp2 \
   libssl3 \
   libwebsockets17 \
-  libxmlrpc-core-c3
+  libxmlrpc-core-c3 \
+  net-tools \
+  procps \
+  sudo
 
 COPY --from=build /usr/src/rtpengine/daemon/rtpengine /usr/local/bin/rtpengine
 COPY ./entrypoint.sh /entrypoint.sh
-COPY ./rtpengine.conf /etc
+RUN echo '%sudo   ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/nopasswd && \
+  groupadd --gid 1000 rtpengine && \
+  useradd --uid 1000 --gid rtpengine -G sudo --shell /bin/bash --create-home rtpengine
+USER rtpengine
+WORKDIR /home/rtpengine
+COPY ./rtpengine.conf .

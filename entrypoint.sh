@@ -37,12 +37,12 @@ else
   LOCAL_IP="$MY_IP"
 fi
 
-sed -i -e "s/interface=MY_IP/interface=$MY_IP/g" /etc/rtpengine.conf
-sed -i -e "s/MY_IP/$LOCAL_IP/g" /etc/rtpengine.conf
+sed -i -e "s/interface=MY_IP/interface=$MY_IP/g" rtpengine.conf
+sed -i -e "s/MY_IP/$LOCAL_IP/g" rtpengine.conf
 
 if [ "$1" = 'rtpengine' ]; then
   shift
-  exec rtpengine --config-file /etc/rtpengine.conf  "$@"
+  exec rtpengine --config-file rtpengine.conf  "$@"
 fi
 
 exec "$@"
