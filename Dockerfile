@@ -44,9 +44,7 @@ CMD ["rtpengine"]
 
 EXPOSE 23000-65535/udp 22222/udp
 
-RUN --mount=type=cache,target=/var/cache/apt \
-  --mount=type=cache,target=/var/lib/apt/lists \
-  apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
   curl \
   iproute2 \
   iptables \
@@ -72,7 +70,8 @@ RUN --mount=type=cache,target=/var/cache/apt \
   libxmlrpc-core-c3 \
   net-tools \
   procps \
-  sudo
+  sudo \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /usr/src/rtpengine/daemon/rtpengine /usr/local/bin/rtpengine
 COPY ./entrypoint.sh /entrypoint.sh
