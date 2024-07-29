@@ -42,9 +42,10 @@ VOLUME ["/rec"]
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["rtpengine"]
 
-EXPOSE 23000-32768/udp 22222/udp
+EXPOSE 23000-65535/udp 22222/udp
 
 RUN --mount=type=cache,target=/var/cache/apt \
+  --mount=type=cache,target=/var/lib/apt/lists \
   apt-get update && apt-get install -y --no-install-recommends \
   curl \
   iproute2 \
@@ -68,8 +69,7 @@ RUN --mount=type=cache,target=/var/cache/apt \
   libspandsp2 \
   libssl3 \
   libwebsockets17 \
-  libxmlrpc-core-c3 \
-  && rm -rf /var/lib/apt/lists/*
+  libxmlrpc-core-c3
 
 COPY --from=build /usr/src/rtpengine/daemon/rtpengine /usr/local/bin/rtpengine
 COPY ./entrypoint.sh /entrypoint.sh
